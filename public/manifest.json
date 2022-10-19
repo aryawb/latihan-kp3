@@ -1,0 +1,17 @@
+{
+    "name": "Aplikasi Chat",
+    "short_name": "Cutechat",
+    "start_url": "latihan-kp3/public",
+    "background_color": "#13a7ab",
+    "description": "Aplikasi Chatting",
+    "display": "fullscreen",
+    "theme_color": "#13a7ab",
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
