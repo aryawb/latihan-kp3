@@ -1,0 +1,23 @@
+@media (prefers-color-scheme: dark) {
+	.chat-body-left .text-chat-left{
+		max-width: 73%;
+		
+		height: auto;
+		margin: 0 0 0 24px;
+		padding: 14px 20px;
+		border-radius: 18px 18px 18px 0px;
+		background: #13a7ab!important;
+		font-size: 14px;
+	}
+	.chat-body-right .text-chat-right{
+		max-width: 73%;
+
+		height: auto;
+		margin: 0 24px 0 0;
+		padding: 14px 20px;
+		border-radius: 18px 18px 0px 18px;
+		background: #28282b!important;
+		font-size: 14px;
+	}
+}
+
