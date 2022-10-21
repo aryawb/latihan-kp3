@@ -172,7 +172,7 @@
 										
 										<span class="dots-online"></span>
 									</div>
-									<div class="d-flex">
+									<div class="d-flex justify-content-between" style="width: 250px;">
 										<div class="box-text-chat">
 											<div class="box-label-chat justify-content-start">
 												<h6 class="name">{{ $friends->username}}</h6>
@@ -221,7 +221,7 @@
 										@endif
 										<span class="dots-online"></span>
 									</div>
-									<div class="d-flex">
+									<div class="d-flex" style="width: 250px;">
 										<div class="box-text-chat">
 											<div class="box-label-chat">
 												<h6 class="name">{{ $friends->username}}</h6>
@@ -265,7 +265,7 @@
 										@endif
 										<span class="dots-online"></span>
 									</div>
-									<div class="d-flex">
+									<div class="d-flex" style="width: 250px;">
 										<div class="box-text-chat">
 											<div class="box-label-chat">
 												<h6 class="name">{{ $friends->username}}</h6>
@@ -312,7 +312,7 @@
 										@endif
 										<span class="dots-online"></span>
 									</div>
-									<div class="d-flex">
+									<div class="d-flex" style="width: 250px;">
 										<div class="box-text-chat">
 											<div class="box-label-chat">
 												<h6 class="name">{{ $friends->username}}</h6>
@@ -363,7 +363,7 @@
 										@endif
 										<span class="dots-online"></span>
 									</div>
-									<div class="d-flex">
+									<div class="d-flex" style="width: 250px;">
 										<div class="box-text-chat">
 											<div class="box-label-chat">
 												<h6 class="name">{{ $friends->username}}</h6>
@@ -398,6 +398,7 @@
 					@foreach ($list as $friends)
 					@if($friends->user == Auth::user()->id)
 					@foreach ($friends['list_teman'] as $data)
+
 					<div class="card" wire:ignore.self>
 						<div class="card-body">
 							<div wire:ignore.self class="search-box">
@@ -414,9 +415,26 @@
 										<img src="{{asset('img/default-profile.jpg')}}" alt="" class="img-fluid" loading="lazy">
 										@endif
 
-										<span class="dots-online"></span>
 									</div>
-									<div class="d-flex">
+									<!-- <p class="dots-online">{{$data->username}}</p> -->
+									<div class="d-flex justify-content-between" style="width: 250px;">
+										<div class="box-text-chat">
+											<div class="box-label-chat justify-content-start">
+												<h6 class="name">{{ $data->username}}</h6>
+												@foreach($req_friend as $notif)
+												@if($notif['friend'] == Auth::user()->id &&  $notif['user'] == $data->id)
+												<span class="badge badge-danger ml-2" style="font-size: 14px;"><i class='bx bxs-error-circle'></i></span>
+												@endif
+												@endforeach
+											</div>
+											@if($data->bio)
+											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
+											@else
+											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
+											@endif
+										</div>
+
+										
 										@php
 										error_reporting(0);
 										$req_friend = App\Models\Friend::where('status', 'pending')->where('friend', Auth::user()->id)->get();
@@ -426,99 +444,41 @@
 										$duplicateS_null = App\Models\Friend::orderBy('user','desc')->limit(1)->get();
 										@endphp
 										@if($friend_null->isEmpty() || $user_null->isEmpty())
-										<div class="box-text-chat">
-											<div class="box-label-chat justify-content-start">
-												<h6 class="name">{{ $data->username}}</h6>
-												@foreach($req_friend as $notif)
-												@if($notif['friend'] == Auth::user()->id &&  $notif['user'] == $data->id)
-												<span class="badge badge-danger ml-2" style="font-size: 14px;"><i class='bx bxs-error-circle'></i></span>
-												@endif
-												@endforeach
-											</div>
-											@if($data->bio)
-											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
-											@else
-											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
-											@endif
-										</div>
 										<div class="d-flex align-items-center">
 											<button wire:click="addFriend({{ $data->id }})" class="btn btn-sm text-white"><i class='bx bxs-user-plus'></i></button>
 										</div>
 										@elseif($friend_null[0]->user != $user_null[0]->user)
 										@foreach ($user_null as $cek)
 										@if ($cek->user == Auth::user()->id && $cek->friend == $data->id)
-										<div class="box-text-chat">
-											<div class="box-label-chat justify-content-start">
-												<h6 class="name">{{ $data->username}}</h6>
-											</div>
-											@if($data->bio)
-											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
-											@else
-											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
-											@endif
-										</div>
+
 										<div class="d-flex align-items-center">
 											<button wire:click="removeFriend({{ $data->id }})" class="btn btn-sm text-white"><i class='bx bxs-user-x'></i></button>
 										</div>
+										
+
 										@elseif($duplicateS_null[0]->user == Auth::user()->id && $duplicateS_null[0]->friend == $data->id)
-										<div class="box-text-chat">
-											<div class="box-label-chat justify-content-start">
-												<h6 class="name">{{ $data->username}}</h6>
-											</div>
-											@if($data->bio)
-											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
-											@else
-											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
-											@endif
-										</div>
+										
 										<div class="d-flex align-items-center">
 											<button wire:click="addFriend({{ $data->id }})" class="btn btn-sm text-white"><i class='bx bxs-user-x'></i></button>
 										</div>
+
 										@elseif($user_null[0]->user == Auth::user()->id && $user_null[0]->friend != $data->id)
 										@if($user_null[1]->user == Auth::user()->id && $user_null[1]->friend == $data->id)
 										@else
-
-										<div class="box-text-chat">
-											<div class="box-label-chat justify-content-start">
-												<h6 class="name">{{ $data->username}}</h6>
-												@foreach($req_friend as $notif)
-												@if($notif['friend'] == Auth::user()->id &&  $notif['user'] == $data->id)
-												<span class="badge badge-danger ml-2" style="font-size: 14px;"><i class='bx bxs-error-circle'></i></span>
-												@endif
-												@endforeach
-											</div>
-											@if($data->bio)
-											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
-											@else
-											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
-											@endif
-										</div>
+										
 										<div class="d-flex align-items-center">
 											<button wire:click="addFriend({{ $data->id }})" class="btn btn-sm text-white"><i class='bx bxs-user-plus'></i></button>
-										</div>
+										</div> 
+										
 										@endif
 										@elseif($user_null[0]->user == Auth::user()->id && $user_null[0]->friend == $data->id)
 
 										@else
-
-										<div class="box-text-chat">
-											<div class="box-label-chat justify-content-start">
-												<h6 class="name">{{ $data->username}}</h6>
-												@foreach($req_friend as $notif)
-												@if($notif['friend'] == Auth::user()->id &&  $notif['user'] == $data->id)
-												<span class="badge badge-danger ml-2" style="font-size: 14px;"><i class='bx bxs-error-circle'></i></span>
-												@endif
-												@endforeach
-											</div>
-											@if($data->bio)
-											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
-											@else
-											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
-											@endif
-										</div>
+										
 										<div class="d-flex align-items-center">
 											<button wire:click="addFriend({{ $data->id }})" class="btn btn-sm text-white"><i class='bx bxs-user-plus'></i></button>
 										</div>
+										
 										@endif
 										@endforeach
 
@@ -526,53 +486,31 @@
 										@else
 										@foreach ($teman_req as $item)
 										@if ($item['user'] == Auth::user()->id && $item['friend'] == $data->id)
-										<div class="box-text-chat">
-											<div class="box-label-chat justify-content-start">
-												<h6 class="name">{{ $data->username}}</h6>
-											</div>
-											@if($data->bio)
-											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
-											@else
-											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
-											@endif
-										</div>
+										
 										<div class="d-flex align-items-center">
 											<button wire:click="removeFriend({{ $data->id }})" class="btn btn-sm text-white"><i class='bx bxs-user-x'></i></button>
 										</div>
+										
 										@elseif($item['user'] != Auth::user()->id)
-										<div class="box-text-chat">
-											<div class="box-label-chat justify-content-start">
-												<h6 class="name">{{ $data->username}}</h6>
-												@foreach($req_friend as $notif)
-												@if($notif['friend'] == Auth::user()->id &&  $notif['user'] == $data->id)
-												<span class="badge badge-danger ml-2" style="font-size: 14px;"><i class='bx bxs-error-circle'></i></span>
-												@endif
-												@endforeach
-											</div>
-											@if($data->bio)
-											<p wire:ignore.self class="small-messages">{{ $data->bio}}</p>
-											@else
-											<p wire:ignore.self class="small-messages">Hi guys, I'am already using cutechat!</p>
-											@endif
-										</div>
+										
 										<div class="d-flex align-items-center">
 											<button wire:click="addFriend({{ $data->id }})" class="btn btn-sm text-white"><i class='bx bxs-user-plus'></i></button>
 										</div>
+										
 										@endif
 										@endforeach                                                        
-
 										@endif
 
-										@endforeach
-										@endif
-										@endforeach
+
 									</div>
 								</div>
 							</div>			
 
 						</div>
 					</div>
-
+					@endforeach
+					@endif
+					@endforeach
 				</div>
 				<div wire:ignore.self class="tab-pane fade" id="setting" role="tabpanel" aria-labelledby="contact-tab">
 					<h5>Settings</h5>
@@ -582,6 +520,7 @@
 							<div class="card-body">
 								<div wire:ignore.self class="accordion clearfix" id="accordionExample">
 									<!-- <a href="javascript:void(0)" type="button" onclick="openNavLeft()" > -->
+										<!-- wire:click="editProfile({{ $userini->id }})" -->
 										<div wire:ignore.self wire:click="editProfile({{ $userini->id }})" class="box-inside" onclick="openNavLeft()">
 											<h6 class="mb-0 font" for="">Profile</h6>
 											<i class='bx bxs-user-detail'></i>
@@ -722,8 +661,9 @@
 						<div class="w-100 d-flex justify-content-center mb-2">
 							<div class="img-setting">
 								<!--  -->
-
-								@if($userini->foto_profil)
+								@if($avator)
+								<img src="{{$avator->temporaryUrl()}}" alt="" class="img-fluid" loading="lazy">
+								@elseif($userini->foto_profil)
 								<img src="{{ Storage::url('images/' .$userini->foto_profil)}}" alt="" class="img-fluid" loading="lazy">
 								@else
 								<img src="{{asset('img/default-profile.jpg')}}" alt="" class="img-fluid" loading="lazy">
@@ -737,10 +677,10 @@
 										@else
 										<a class="dropdown-item d-none" href="#">Lihat</a>
 										@endif
-										<!-- <a class="dropdown-item" href="#">
+										<a class="dropdown-item" href="#">
 											<input class="d-none" type="file" id="file" wire:model="avator">
 											<label class="mb-0 w-100 d-flex align-items-center" style="cursor: pointer;" for="file"><i class='bx bxs-edit'></i> &nbsp;Ubah</label>
-										</a> -->
+										</a>
 										@if($userini->foto_profil)
 										<a onclick="confirm('Delete your profile picture?') || event.stopImmediatePropagation()" wire:click="deleteProfile({{ $userini->id }})" class="dropdown-item" href="#"><i class='bx bx-trash'></i>&nbsp; Hapus</a>
 										@else
@@ -750,23 +690,26 @@
 								</div>
 							</div>
 						</div>
-						<div class="form-group">
+<!-- 						<div class="form-group">
 							<input type="file" id="file" wire:model="avator">
-						</div>
+						</div> -->
 						<div class="form-group">
-							<input wire:ignore.self type="text" class="input-profile" wire:model="nameUser" required="" placeholder="Full Name" value="{{$userini->name}}">
+							<input wire:ignore.self type="text" class="input-profile" wire:model="nameUser"  placeholder="Full Name">
+							<!-- <p>{{$userini->name}}</p> -->
 							<span class="focus-border"></span>
 						</div>
 						<div class="form-group">
-							<input wire:ignore.self type="text" class="input-profile" wire:model="emailUser" required="" placeholder="Email" value="{{$userini->email}}">
+							<input wire:ignore.self type="text" class="input-profile" wire:model="emailUser"  placeholder="Email">
+							<!-- <p>{{$userini->email}}</p> -->
 							<span class="focus-border"></span>
 						</div>
 						<div class="form-group">
-							<input wire:ignore.self type="number" class="input-profile" wire:model="phoneUser" required="" placeholder="Phone" value="{{$userini->phone}}">
+							<input wire:ignore.self type="number" class="input-profile" wire:model="phoneUser"  placeholder="Phone">
+							<!-- <p>{{$userini->phone}}</p> -->
 							<span class="focus-border"></span>
 						</div>
 						<div class="form-group">
-							<textarea wire:ignore.self rows="1" wire:model="bioUser" class="w-100 input-profile" id="my-text" placeholder="Bio">{{$userini->bio}}</textarea>
+							<textarea wire:ignore.self rows="1" wire:model="bioUser" class="w-100 input-profile" id="my-text" placeholder="Bio"></textarea>
 							<span class="focus-border" id="maks"></span>
 							<p class="mb-0 w-100 text-right d-none" id="result"></p>
 						</div>

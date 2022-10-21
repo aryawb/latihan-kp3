@@ -220,9 +220,11 @@ public function addFavorite ($id)
             'bioUser' => 'nullable'
         ]);
 
-        $avator = $this->avator;
+        
         // dd($this->avator);
+        $avator = $this->avator;
         if ($this->avator != null) {
+            // dd($avator);
             // dd(Str::random(10).'.'. $avator->extension(););
             if($id){
                 $edit = User::find($id);
@@ -246,23 +248,22 @@ public function addFavorite ($id)
                 $edit = User::find($id);
 
                 if ($edit) {
-                   $avator = Str::random(10).'.'. $avator->extension();
+
                    $edit->update([
                     'name'     => $this->nameUser,
                     'email'   => $this->emailUser,
                     'phone'   => $this->phoneUser,
-                    'bio'   => $this->bioUser,
-                    'foto_profil' => $avator
+                    'bio'   => $this->bioUser
                 ]);
                }
            }
-           $this->avator->storeAs('public/images', $avator);
+
        }
        $this->dispatchBrowserEvent('alert',
         ['type' => 'success',  'message' => 'Data updated successfully!']);
 
 
-       $this->editProfile($id);
+       return redirect()->to('/dashboard');
    }
    //  public function changePass()
    //  {     
@@ -347,6 +348,6 @@ public function render ()
    $noFriends = User::where('id', '!=', $user)->with('wolak')->get();
    $messages = Message::where('thread', $user.'-'.$receiver)->orWhere('thread', $receiver.'-'.$user)->get();
 
-   return view('livewire.dashboard', compact('users','userini','current', 'messages','noFriends'));
+   return view('livewire.dashboard', compact('users','userini','current', 'messages','noFriends','list'));
 }
 }
