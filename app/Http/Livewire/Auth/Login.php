@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Illuminate\Auth\Events\Registered;
-use App\models\User;
+use App\Models\User;
 
 class Login extends Component
 {
